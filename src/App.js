@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Globe from 'react-globe.gl';
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 const API_URL = "https://aseevia.github.io/star-wars-frontend/data/secret.json";
 
 function App() {
@@ -10,7 +10,6 @@ function App() {
   const [worldData, setWorldData] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
-  const world = useRef(null);
 
   const getSecret = async () => {
     const response = await fetch(`${API_URL}`);
@@ -39,7 +38,6 @@ function App() {
     <div className="App">
     <div style={{ width: '100vw', height: '100vh' }}>
       <Globe
-        ref={world}
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
         backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
         pointsData={worldData}
