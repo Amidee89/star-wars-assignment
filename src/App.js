@@ -1,12 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
 import Globe from 'react-globe.gl';
+import * as geolib from 'geolib';
 
-import { useEffect, useState} from "react";
+
+import { useEffect, useState, useCallback} from "react";
 const API_URL = "https://aseevia.github.io/star-wars-frontend/data/secret.json";
 const ADDITIONAL_INFO_URL = "https://akabab.github.io/starwars-api/api/id/";
 function App() {
   const [worldData, setWorldData] = useState([]);
+  const [selectedPoint, setSelectedPoint] = useState(null);
+  const [sortedData, setSortedData] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
 
@@ -32,6 +36,38 @@ function App() {
     return data;
   };
   
+  useEffect(() => {
+    console.log(worldData);
+  }, [worldData]);
+  
+const handlePointClick = useCallback(({ lat: lat, lng: lng }) => {
+    setSelectedPoint({ lat, lng });
+  }, []);
+ 
+  
+  
+  useEffect(() => {
+    sortData();
+  }, [selectedPoint]);
+
+  const sortData = () => {
+    if (!selectedPoint) return;
+    const sorted = [...worldData].sort((a, b) =>       
+      calcDistance(a.lat, a.long, selectedPoint.lat, selectedPoint.lng) - 
+      calcDistance(b.lat, b.long, selectedPoint.lat, selectedPoint.lng)
+    );
+    setSortedData(sorted);
+    console.log(sortedData);
+  };  
+  
+const calcDistance = (lat1, lon1, lat2, lon2) => {   
+    const distance = geolib.getDistance(
+      { latitude: lat1, longitude: lon1 },
+      { latitude: lat2, longitude: lon2 }
+    );
+    return distance; 
+  };
+  
   useEffect (()=>{
     getData();
     window.addEventListener('resize', handleResize);
@@ -44,9 +80,7 @@ function App() {
       window.removeEventListener('resize', handleResize);
     };
   };
-  useEffect(() => {
-    console.log(worldData);
-  }, [worldData]);
+
   
   return (
     <div className="App">
@@ -69,6 +103,8 @@ function App() {
         showAtmosphere={true}
         atmosphereColor={"blue"}
         atmosphereAltitude={0.3}
+        
+        onGlobeClick={handlePointClick}
       />
     </div>
 
