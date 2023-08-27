@@ -23,9 +23,7 @@ function App() {
     });
     
     const updatedData = await Promise.all(promises);
-    
-    console.log(updatedData);
-    setWorldData(parsedData);
+    setWorldData(updatedData);
   }		
   
   const getAdditionalData = async (id) => {
@@ -46,22 +44,31 @@ function App() {
       window.removeEventListener('resize', handleResize);
     };
   };
-  
+  useEffect(() => {
+    console.log(worldData);
+  }, [worldData]);
   
   return (
     <div className="App">
     <div style={{ width: '100vw', height: '100vh' }}>
       <Globe
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
+        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
         backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
-        pointsData={worldData}
-        pointLat="lat"
-        pointLng="long"
-        pointColor={() => 'red'}
-        pointAltitude={0}
-        pointRadius={1.005}
+        labelsData={worldData}
+        labelLat={d => d.lat}
+        labelLng={d => d.long}
+        labelIncludeDot={true}
+        labelDotRadius={.75}
+        labelColor={() => 'rgba(255, 250, 255, 1)'}
+        labelResolution={4}
+        labelSize={.75}
+        labelAltitude={.03}
+        labelText={d => d.name}
         width={width} //this library is not responsive otherwise!
         height={height}
+        showAtmosphere={true}
+        atmosphereColor={"blue"}
+        atmosphereAltitude={0.3}
       />
     </div>
 
