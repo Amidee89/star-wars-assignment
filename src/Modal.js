@@ -5,10 +5,12 @@ const Modal = ({ data, closeModal }) => {
 	<div className="modal-background" onClick={closeModal}>
 	  <div className="modal-content" onClick={e => e.stopPropagation()}>
 		<button onClick={closeModal} className="modal-close-button">X</button>
-		<h2>{data.name}</h2>
+
 		<div className="modal-flex-container">
 		  <img src={data.image} alt={data.name} className="modal-image" />
+		  
 		  <div className="modal-details">
+		  <h2>{data.name}</h2>
 			<div><strong>Position:</strong></div>
 			<div>Lat: {data.lat.toFixed(4)}</div>
 			<div>Long: {data.long.toFixed(4)}</div><br />
