@@ -8,6 +8,8 @@ import Modal from "./Modal.js";
 import { useEffect, useState, useCallback} from "react";
 const API_URL = "https://aseevia.github.io/star-wars-frontend/data/secret.json";
 const ADDITIONAL_INFO_URL = "https://akabab.github.io/starwars-api/api/id/";
+const MAP_CENTER = { lat: 0, lng: 0, altitude: 1.5 };
+
 function App() {
   const [worldData, setWorldData] = useState([]);
   const [selectedPoint, setSelectedPoint] = useState(null);
@@ -118,7 +120,7 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
   
   return (
     <div className="App">
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div className="globe-container" style={{ width: '100vw', height: '100vh' }}>
       <Globe
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
         backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
@@ -132,12 +134,11 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
         labelSize={.75}
         labelAltitude={.03}
         labelText={d => d.name}
-        width={width} //this library is not responsive otherwise!
-        height={height}
+        width={width+100} //this library is not responsive otherwise!
+        height={height+100}
         showAtmosphere={true}
         atmosphereColor={"blue"}
         atmosphereAltitude={0.3}
-        
         htmlElementsData={selectedPoint? [selectedPoint] : []}
         htmlLat={d => d.lat}
         htmlLng={d => d.lng}
