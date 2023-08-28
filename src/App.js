@@ -4,6 +4,9 @@ import './App.css';
 import Globe from 'react-globe.gl';
 import * as geolib from 'geolib';
 import Modal from "./Modal.js";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as THREE from 'three';
+
 
 import { useEffect, useState, useCallback} from "react";
 const API_URL = "https://aseevia.github.io/star-wars-frontend/data/secret.json";
@@ -18,6 +21,7 @@ function App() {
   const [height, setHeight] = useState(window.innerHeight);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
+  const [starDestroyerModel, setStarDestroyerModel] = useState(null);
 
   const getData = async () => {
     const response = await fetch(`${API_URL}`);
@@ -42,7 +46,7 @@ function App() {
   };
   
   useEffect(() => {
-    console.log(worldData);
+    //console.log(worldData);
   }, [worldData]);
   
   const handlePointClick = useCallback(({ lat: lat, lng: lng }) => {
@@ -61,7 +65,7 @@ function App() {
       calcDistance(b.lat, b.long, selectedPoint.lat, selectedPoint.lng)
     );
     setSortedData(sorted);
-    console.log(sortedData);
+    //console.log(sortedData);
   };  
   
 const calcDistance = (lat1, lon1, lat2, lon2) => {   
@@ -117,6 +121,17 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
     };
   };
 
+  useEffect(() => {
+    const loader = new GLTFLoader();
+    
+    loader.load('./models/sd.glb', (gltf) => {
+      const model = gltf.scene;
+      model.scale.set(2, 2, 2); 
+      model.position.set(200.3, 50.5, -50); 
+      setStarDestroyerModel(model);
+      });
+  }, []);
+  
   
   return (
     <div className="App">
@@ -149,7 +164,8 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
           return el;
         }}        
         htmlTransitionDuration={1000}
-        
+        customLayerData={starDestroyerModel ? [{}] : []} // empty array if model not yet loaded
+        customThreeObject={() => starDestroyerModel}
         onGlobeClick={handlePointClick}
         
       />
