@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+.sorted-data-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+
+.sorted-data-list {
+  display: inline-block;
+}
+
+.data-box {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid white;
+}
+
+.data-name {
+  font-size: 1em;
+}
+
+.data-image {
+  width: auto;
+  height: 75px;
+}
+
+.data-distance {
+  font-size: 0.8em;
+}

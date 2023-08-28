@@ -75,6 +75,27 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
     return elem;
   };
   
+  const renderSortedData = () => {
+    if (sortedData.length === 0 || !selectedPoint) {
+      return <div>Click on the globe to find the closest target to your location.</div>;
+    }
+  
+    return (
+    <div className="sorted-data-list">
+      {sortedData.map((data, index) => (
+        <div key={index} className="data-box">
+          <div className="data-name">{data.name}</div>
+          <img src={data.image} alt={data.name} className="data-image" />
+          <div className="data-distance">
+            {calcDistance(data.lat, data.long, selectedPoint.lat, selectedPoint.lng)} meters
+          </div>
+        </div>
+      ))}
+    </div>
+    );
+  };
+  
+  
   useEffect (()=>{
     getData();
     window.addEventListener('resize', handleResize);
@@ -127,7 +148,9 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
         
       />
     </div>
-
+    <div className="sorted-data-container">
+      {renderSortedData()}
+    </div>
     </div>
   );
 }
