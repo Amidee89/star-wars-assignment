@@ -41,15 +41,39 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
+  overflow-x: hidden;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
+  z-index: 999;
 }
 
 .sorted-data-list {
   max-height: 200px;
   overflow-y: auto;
+}
+
+
+/* Add this new CSS for styling scrollbar */
+.sorted-data-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.sorted-data-list::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 5px; /* Round corners */
+}
+
+.sorted-data-list::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+
+.sorted-data-list::-webkit-scrollbar-track {
+  background: transparent; /* Remove scrollbar background */
+}
+
+/* For Firefox */
+.sorted-data-list {
+  scrollbar-color: white transparent; /* Thumb and Track color */
 }
 
 .data-box {
