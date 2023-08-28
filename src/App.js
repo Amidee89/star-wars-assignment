@@ -3,7 +3,7 @@ import marker from './marker.svg';
 import './App.css';
 import Globe from 'react-globe.gl';
 import * as geolib from 'geolib';
-
+import Modal from "./Modal.js";
 
 import { useEffect, useState, useCallback} from "react";
 const API_URL = "https://aseevia.github.io/star-wars-frontend/data/secret.json";
@@ -14,6 +14,8 @@ function App() {
   const [sortedData, setSortedData] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
 
   const getData = async () => {
     const response = await fetch(`${API_URL}`);
@@ -41,11 +43,10 @@ function App() {
     console.log(worldData);
   }, [worldData]);
   
-const handlePointClick = useCallback(({ lat: lat, lng: lng }) => {
+  const handlePointClick = useCallback(({ lat: lat, lng: lng }) => {
     setSelectedPoint({ lat, lng });
   }, []);
  
-  
   
   useEffect(() => {
     sortData();
@@ -83,18 +84,23 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
     return (
     <div className="sorted-data-list">
       {sortedData.map((data, index) => (
-        <div key={index} className="data-box">
-          <div className="data-name">{data.name}</div>
-          <img src={data.image} alt={data.name} className="data-image" />
-          <div className="data-distance">
-            {calcDistance(data.lat, data.long, selectedPoint.lat, selectedPoint.lng)} meters
-          </div>
+        <div 
+          key={index} className="data-box" onClick={() => openModal(data)}>
+            <div className="data-name">{data.name}</div>
+            <img src={data.image} alt={data.name} className="data-image" />
+            <div className="data-distance">
+              {(calcDistance(data.lat, data.long, selectedPoint.lat, selectedPoint.lng)/1000).toFixed(1)} km
+            </div>
         </div>
       ))}
     </div>
     );
   };
   
+  const openModal = (data) => {
+    setModalData(data);
+    setIsModalOpen(true);
+  };
   
   useEffect (()=>{
     getData();
@@ -145,12 +151,15 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
         
         onGlobeClick={handlePointClick}
         
-        
       />
     </div>
+    
     <div className="sorted-data-container">
       {renderSortedData()}
     </div>
+    
+    {isModalOpen && <Modal data={modalData} closeModal={() => setIsModalOpen(false)} />}
+
     </div>
   );
 }
