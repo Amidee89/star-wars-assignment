@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+import marker from './marker.svg';
 import './App.css';
 import Globe from 'react-globe.gl';
 import * as geolib from 'geolib';
@@ -68,6 +69,12 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
     return distance; 
   };
   
+  const createPinElement = () => {
+    const elem = document.createElement('div');
+    elem.innerHTML = '<div style="background-color: red; width: 20px; height: 20px; border-radius: 50%;"></div>';
+    return elem;
+  };
+  
   useEffect (()=>{
     getData();
     window.addEventListener('resize', handleResize);
@@ -104,7 +111,20 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
         atmosphereColor={"blue"}
         atmosphereAltitude={0.3}
         
+        htmlElementsData={selectedPoint? [selectedPoint] : []}
+        htmlLat={d => d.lat}
+        htmlLng={d => d.lng}
+        htmlAltitude={0.05}
+        htmlElement={d => {
+          const el = document.createElement('div');
+          el.innerHTML = `<img src="${marker}" alt="marker" style="width: 30px; height: auto; color: red;" />`;
+          return el;
+        }}        
+        htmlTransitionDuration={1000}
+        
         onGlobeClick={handlePointClick}
+        
+        
       />
     </div>
 
