@@ -6,9 +6,8 @@ import * as geolib from 'geolib';
 import Modal from "./Modal.js";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
-
-
 import { useEffect, useState, useCallback} from "react";
+
 const API_URL = "https://aseevia.github.io/star-wars-frontend/data/secret.json";
 const ADDITIONAL_INFO_URL = "https://akabab.github.io/starwars-api/api/id/";
 const MAP_CENTER = { lat: 0, lng: 0, altitude: 1.5 };
@@ -45,15 +44,10 @@ function App() {
     return data;
   };
   
-  useEffect(() => {
-    //console.log(worldData);
-  }, [worldData]);
-  
   const handlePointClick = useCallback(({ lat: lat, lng: lng }) => {
     setSelectedPoint({ lat, lng });
   }, []);
  
-  
   useEffect(() => {
     sortData();
   }, [selectedPoint]);
@@ -164,7 +158,7 @@ const calcDistance = (lat1, lon1, lat2, lon2) => {
           return el;
         }}        
         htmlTransitionDuration={1000}
-        customLayerData={starDestroyerModel ? [{}] : []} // empty array if model not yet loaded
+        customLayerData={starDestroyerModel ? [{}] : []} // empty array if model not yet loaded, otherwise crashes
         customThreeObject={() => starDestroyerModel}
         onGlobeClick={handlePointClick}
         
